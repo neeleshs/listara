@@ -123,8 +123,7 @@ BASE_TEMPLATE = """<!DOCTYPE html>
         .app-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 20px;
-            padding-top: 40px;
+            padding: 15px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -132,14 +131,22 @@ BASE_TEMPLATE = """<!DOCTYPE html>
         }
 
         .app-header h1 {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin: 0;
         }
 
         .app-header p {
             opacity: 0.9;
-            font-size: 14px;
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        /* Header with back button */
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         /* Back button */
@@ -148,8 +155,7 @@ BASE_TEMPLATE = """<!DOCTYPE html>
             align-items: center;
             color: white;
             text-decoration: none;
-            margin-bottom: 15px;
-            font-size: 16px;
+            font-size: 14px;
             opacity: 0.9;
         }
 
@@ -491,7 +497,6 @@ HOME_TEMPLATE = """{% extends "base.html" %}
 {% block content %}
 <div class="app-header">
     <h1>My Todo Lists</h1>
-    <p>Create and manage your lists</p>
 </div>
 
 <div class="content">
@@ -638,8 +643,10 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
 {% block title %}{{ todo_list.name }}{% endblock %}
 {% block content %}
 <div class="app-header">
-    <a href="{% url 'home' %}" class="back-button">← Back</a>
-    <h1>{{ todo_list.name }}</h1>
+    <div class="header-row">
+        <h1>{{ todo_list.name }}</h1>
+        <a href="{% url 'home' %}" class="back-button">← Back</a>
+    </div>
 </div>
 
 <div class="content">
