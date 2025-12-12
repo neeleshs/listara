@@ -25,11 +25,29 @@ DATABASES = {
     )
 }
 
+# Get production domain from environment or use wildcard for Railway
+IS_PRODUCTION = bool(os.environ.get("RAILWAY_PUBLIC_DOMAIN", ""))
+
+# Build CSRF trusted origins list
+CSRF_ORIGINS = []
+if IS_PRODUCTION:
+    # Add common Railway domains
+    CSRF_ORIGINS = [
+        "https://*.up.railway.app",
+        "https://*.railway.app",
+    ]
+    # Add specific domain if provided
+    if os.environ.get("RAILWAY_PUBLIC_DOMAIN"):
+        CSRF_ORIGINS.append(f"https://{os.environ.get('RAILWAY_PUBLIC_DOMAIN')}")
+
 app = Django(
     ALLOWED_HOSTS=["*"],
     SECRET_KEY=os.environ.get("SECRET_KEY", "your-secret-key-change-in-production"),
     CSRF_USE_SESSIONS=False,  # Use cookies for CSRF tokens
     CSRF_COOKIE_HTTPONLY=False,  # Allow JavaScript to read the CSRF cookie
+    CSRF_COOKIE_SECURE=IS_PRODUCTION,  # Use secure cookies in production
+    CSRF_TRUSTED_ORIGINS=CSRF_ORIGINS,
+    SESSION_COOKIE_SECURE=IS_PRODUCTION,
     DEBUG=os.environ.get("DEBUG", "False") == "True",
     DATABASES=DATABASES,
 )
