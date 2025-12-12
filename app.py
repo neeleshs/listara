@@ -855,12 +855,27 @@ def add_item(request, list_id):
             existing_items = todo_list.items.all()
             for existing_item in existing_items:
                 if existing_item.text.lower() == text_stripped.lower():
-                    # Return a simple message for duplicate that auto-removes
+                    # Return a message and script to highlight the duplicate
                     return HttpResponse(
                         '<div class="card" id="duplicate-message" style="background: #fff3cd; border-color: #ffc107; padding: 15px; margin-bottom: 15px;">'
                         '<p style="color: #856404; margin: 0; font-weight: 500;">This item already exists in the list</p>'
-                        '<script>setTimeout(() => document.getElementById("duplicate-message")?.remove(), 3000);</script>'
-                        '</div>',
+                        '</div>'
+                        '<script>'
+                        '(function() {'
+                        '  const itemElement = document.getElementById("item-' + str(existing_item.id) + '");'
+                        '  if (itemElement) {'
+                        '    itemElement.style.transition = "all 0.3s ease";'
+                        '    itemElement.style.background = "#fff3cd";'
+                        '    itemElement.style.boxShadow = "0 0 10px rgba(255, 193, 7, 0.5)";'
+                        '    itemElement.scrollIntoView({ behavior: "smooth", block: "center" });'
+                        '    setTimeout(() => {'
+                        '      itemElement.style.background = "";'
+                        '      itemElement.style.boxShadow = "";'
+                        '    }, 3000);'
+                        '  }'
+                        '  setTimeout(() => document.getElementById("duplicate-message")?.remove(), 3000);'
+                        '})();'
+                        '</script>',
                         headers={'HX-Reswap': 'innerHTML', 'HX-Retarget': '#message-container'}
                     )
 
