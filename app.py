@@ -652,9 +652,29 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
         <form hx-post="{% url 'add_item' todo_list.id %}"
               hx-target="#items"
               hx-swap="afterbegin"
-              hx-on::after-request="if(event.detail.successful) { this.reset(); if (!isMobileDevice()) { this.querySelector('input[name=text]').focus(); } }">
+              hx-on::before-request="this.dataset.lastValue = this.querySelector('input[name=text]').value;"
+              hx-on::after-request="if(event.detail.successful) {
+                  const text = this.dataset.lastValue;
+                  this.reset();
+                  if (!isMobileDevice()) { this.querySelector('input[name=text]').focus(); }
+                  // Add to datalist if not duplicate
+                  if (text) {
+                      const datalist = document.getElementById('item-suggestions');
+                      const existingOptions = Array.from(datalist.options).map(opt => opt.value.toLowerCase());
+                      if (!existingOptions.includes(text.toLowerCase())) {
+                          const option = document.createElement('option');
+                          option.value = text;
+                          datalist.appendChild(option);
+                      }
+                  }
+              }">
             {% csrf_token %}
-            <input type="text" name="text" placeholder="Add new item..." required>
+            <input type="text" name="text" placeholder="Add new item..." required list="item-suggestions" autocomplete="on">
+            <datalist id="item-suggestions">
+                {% for item in todo_list.items.all %}
+                <option value="{{ item.text }}">
+                {% endfor %}
+            </datalist>
             <button type="submit" class="btn-primary">Add Item</button>
         </form>
     </div>
