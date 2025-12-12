@@ -1,1 +1,1 @@
-web: uvicorn app:app.asgi --host 0.0.0.0 --port ${PORT:-8000}
+web: nanodjango run app.py --port ${PORT:-8000}

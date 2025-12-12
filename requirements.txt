@@ -2,5 +2,3 @@ nanodjango
 django>=5.0
 dj-database-url
 psycopg2-binary
-gunicorn
-uvicorn
