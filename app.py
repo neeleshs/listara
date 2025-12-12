@@ -477,12 +477,7 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
 </div>
 
 <div class="container" style="margin-top: 20px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <h2 style="margin: 0;">Items</h2>
-        <span style="color: #666; font-size: 14px;">
-            Last changed: {{ todo_list.updated_at|date:"Y-m-d H:i:s" }}
-        </span>
-    </div>
+    <h2>Items</h2>
     <div id="items">
         {% for item in todo_list.items.all %}
         <div class="todo-item" id="item-{{ item.id }}">
