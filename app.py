@@ -608,10 +608,6 @@ HOME_TEMPLATE = """{% extends "base.html" %}
 
     // Delete list function
     window.deleteList = function(listId) {
-        if (!confirm('Are you sure you want to remove this list from your view?')) {
-            return;
-        }
-
         // Remove from localStorage only
         const todoLists = JSON.parse(localStorage.getItem('todoLists') || '{}');
         delete todoLists[listId];
