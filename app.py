@@ -98,135 +98,246 @@ BASE_TEMPLATE = """<!DOCTYPE html>
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-            max-width: 800px;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Mobile container */
+        .mobile-container {
+            max-width: 430px;
             margin: 0 auto;
+            background: #f8f9fa;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.2);
         }
 
-        .header {
-            background: white;
+        /* App header */
+        .app-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding-top: 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
 
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
+        .app-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
         }
 
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .app-header p {
+            opacity: 0.9;
+            font-size: 14px;
         }
 
-        .form-group {
+        /* Back button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
             margin-bottom: 15px;
+            font-size: 16px;
+            opacity: 0.9;
         }
 
+        .back-button:hover {
+            opacity: 1;
+        }
+
+        /* Main content */
+        .content {
+            padding: 15px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* Form inputs */
         input[type="text"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
             font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
         }
 
-        button {
-            background: #007bff;
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        /* Primary button */
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
+            padding: 15px 30px;
+            border-radius: 12px;
             font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            margin-top: 10px;
         }
 
-        button:hover {
-            background: #0056b3;
+        .btn-primary:active {
+            transform: scale(0.98);
         }
 
-        button.delete {
-            background: #dc3545;
-            padding: 5px 10px;
-            font-size: 14px;
-        }
-
-        button.delete:hover {
-            background: #c82333;
-        }
-
-        button.edit {
-            background: #ffc107;
-            color: #333;
-            padding: 5px 10px;
-            font-size: 14px;
-            margin-right: 5px;
-        }
-
-        button.edit:hover {
-            background: #e0a800;
-        }
-
+        /* List items */
         .list-item {
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 4px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
             margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .list-item:active {
+            transform: scale(0.98);
+            background: #f8f9fa;
         }
 
         .list-item a {
-            color: #007bff;
+            color: #333;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 17px;
+            font-weight: 500;
+            flex: 1;
         }
 
-        .list-item a:hover {
-            text-decoration: underline;
+        .list-item .list-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
         }
 
+        .list-item .date {
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* Todo items */
         .todo-item {
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 4px;
-            margin-bottom: 8px;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+        }
+
+        .todo-item:active {
+            transform: scale(0.98);
         }
 
         .todo-item-text {
             flex: 1;
-            margin-right: 10px;
+            color: #333;
+            font-size: 16px;
+            padding-right: 10px;
         }
 
+        /* Action buttons */
         .actions {
             display: flex;
-            gap: 5px;
+            gap: 8px;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #007bff;
-            text-decoration: none;
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
 
-        .back-link:hover {
-            text-decoration: underline;
+        .btn-edit {
+            background: #f0f2f5;
+            color: #667eea;
         }
 
+        .btn-edit:active {
+            background: #667eea;
+            color: white;
+            transform: scale(0.9);
+        }
+
+        .btn-delete {
+            background: #fee;
+            color: #dc3545;
+        }
+
+        .btn-delete:active {
+            background: #dc3545;
+            color: white;
+            transform: scale(0.9);
+        }
+
+        .btn-remove {
+            background: #fee;
+            color: #dc3545;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-remove:active {
+            background: #dc3545;
+            color: white;
+            transform: scale(0.95);
+        }
+
+        /* Edit form */
         .edit-form {
             display: flex;
             gap: 10px;
@@ -235,12 +346,81 @@ BASE_TEMPLATE = """<!DOCTYPE html>
 
         .edit-form input {
             flex: 1;
+            padding: 10px;
         }
 
+        .edit-form button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Empty state */
         .empty-state {
             text-align: center;
-            padding: 40px;
+            padding: 60px 20px;
             color: #999;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        /* Floating action button */
+        .fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .fab:active {
+            transform: scale(0.9);
+        }
+
+        /* Input group */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .input-group input {
+            flex: 1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 430px) {
+            .mobile-container {
+                max-width: 100%;
+                box-shadow: none;
+            }
+        }
+
+        /* Remove default button styles */
+        button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
     <script>
@@ -298,7 +478,9 @@ BASE_TEMPLATE = """<!DOCTYPE html>
     </script>
 </head>
 <body>
-    {% block content %}{% endblock %}
+    <div class="mobile-container">
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>"""
 
@@ -307,26 +489,26 @@ BASE_TEMPLATE = """<!DOCTYPE html>
 HOME_TEMPLATE = """{% extends "base.html" %}
 {% block title %}Todo Lists - Home{% endblock %}
 {% block content %}
-<div class="header">
+<div class="app-header">
     <h1>My Todo Lists</h1>
-    <p>Create and manage your todo lists</p>
+    <p>Create and manage your lists</p>
 </div>
 
-<div class="container">
-    <form id="create-list-form">
-        {% csrf_token %}
-        <div class="form-group">
+<div class="content">
+    <div class="card">
+        <form id="create-list-form">
+            {% csrf_token %}
             <input type="text" name="name" id="list-name" placeholder="Enter list name..." required>
-        </div>
-        <button type="submit">Create New List</button>
-    </form>
-</div>
+            <button type="submit" class="btn-primary">Create New List</button>
+        </form>
+    </div>
 
-<div class="container" style="margin-top: 20px;">
-    <h2>My Lists</h2>
-    <div id="lists">
-        <div class="empty-state">
-            <p>Loading lists from local storage...</p>
+    <div class="card">
+        <h2>My Lists</h2>
+        <div id="lists">
+            <div class="empty-state">
+                <p>Loading lists...</p>
+            </div>
         </div>
     </div>
 </div>
@@ -356,17 +538,15 @@ HOME_TEMPLATE = """{% extends "base.html" %}
         });
 
         listsContainer.innerHTML = sortedLists.map(([id, list]) => {
-            const createdDate = new Date(list.created).toLocaleString();
+            const createdDate = new Date(list.created).toLocaleDateString();
             return `
                 <div class="list-item">
                     <a href="/list/${id}/" onclick="storeListVisit('${id}', '${list.name}')">
                         ${list.name}
                     </a>
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <span style="color: #999; font-size: 14px;">
-                            Created: ${createdDate}
-                        </span>
-                        <button class="delete" onclick="deleteList('${id}')" style="padding: 5px 10px;">
+                    <div class="list-meta">
+                        <span class="date">${createdDate}</span>
+                        <button class="btn-remove" onclick="event.preventDefault(); deleteList('${id}')">
                             Remove
                         </button>
                     </div>
@@ -455,47 +635,48 @@ HOME_TEMPLATE = """{% extends "base.html" %}
 
 # List detail template
 LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
-{% block title %}{{ todo_list.name }} - Todo List{% endblock %}
+{% block title %}{{ todo_list.name }}{% endblock %}
 {% block content %}
-<div class="header">
-    <a href="{% url 'home' %}" class="back-link">← Back to Lists</a>
+<div class="app-header">
+    <a href="{% url 'home' %}" class="back-button">← Back</a>
     <h1>{{ todo_list.name }}</h1>
-    <p>Manage items in this list</p>
+    <p>Manage your tasks</p>
 </div>
 
-<div class="container">
-    <form hx-post="{% url 'add_item' todo_list.id %}"
-          hx-target="#items"
-          hx-swap="beforeend"
-          hx-on::after-request="if(event.detail.successful) this.reset()">
-        {% csrf_token %}
-        <div class="form-group">
-            <input type="text" name="text" placeholder="Add new item..." required>
-        </div>
-        <button type="submit">Add Item</button>
-    </form>
-</div>
+<div class="content">
+    <div class="card">
+        <form hx-post="{% url 'add_item' todo_list.id %}"
+              hx-target="#items"
+              hx-swap="beforeend"
+              hx-on::after-request="if(event.detail.successful) this.reset()">
+            {% csrf_token %}
+            <input type="text" name="text" placeholder="Add new item..." required autofocus>
+            <button type="submit" class="btn-primary">Add Item</button>
+        </form>
+    </div>
 
-<div class="container" style="margin-top: 20px;">
-    <h2>Items</h2>
-    <div id="items">
+    <div class="card">
+        <h2>Tasks</h2>
+        <div id="items">
         {% for item in todo_list.items.all %}
         <div class="todo-item" id="item-{{ item.id }}">
             <div class="todo-item-text" id="text-{{ item.id }}">
                 {{ item.text }}
             </div>
             <div class="actions">
-                <button class="edit"
+                <button class="btn-icon btn-edit"
                         hx-get="{% url 'edit_item_form' todo_list.id item.id %}"
                         hx-target="#item-{{ item.id }}"
-                        hx-swap="outerHTML">
-                    Edit
+                        hx-swap="outerHTML"
+                        title="Edit">
+                    ✏️
                 </button>
-                <button class="delete"
+                <button class="btn-icon btn-delete"
                         hx-delete="{% url 'delete_item' todo_list.id item.id %}"
                         hx-target="#item-{{ item.id }}"
-                        hx-swap="outerHTML">
-                    Delete
+                        hx-swap="outerHTML"
+                        title="Delete">
+                    🗑️
                 </button>
             </div>
         </div>
@@ -504,6 +685,7 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
             <p>No items yet. Add your first item above!</p>
         </div>
         {% endfor %}
+        </div>
     </div>
 </div>
 
@@ -559,17 +741,19 @@ TODO_ITEM_PARTIAL = """<div class="todo-item" id="item-{{ item.id }}">
         {{ item.text }}
     </div>
     <div class="actions">
-        <button class="edit"
+        <button class="btn-icon btn-edit"
                 hx-get="{% url 'edit_item_form' item.todo_list.id item.id %}"
                 hx-target="#item-{{ item.id }}"
-                hx-swap="outerHTML">
-            Edit
+                hx-swap="outerHTML"
+                title="Edit">
+            ✏️
         </button>
-        <button class="delete"
+        <button class="btn-icon btn-delete"
                 hx-delete="{% url 'delete_item' item.todo_list.id item.id %}"
                 hx-target="#item-{{ item.id }}"
-                hx-swap="outerHTML">
-            Delete
+                hx-swap="outerHTML"
+                title="Delete">
+            🗑️
         </button>
     </div>
 </div>"""
@@ -581,13 +765,14 @@ EDIT_ITEM_FORM = """<div class="todo-item" id="item-{{ item.id }}">
           hx-target="#item-{{ item.id }}"
           hx-swap="outerHTML">
         {% csrf_token %}
-        <input type="text" name="text" value="{{ item.text }}" required>
-        <button type="submit">Save</button>
-        <button type="button"
+        <input type="text" name="text" value="{{ item.text }}" required autofocus>
+        <button type="submit" class="btn-icon btn-edit" title="Save">✅</button>
+        <button type="button" class="btn-icon btn-delete"
                 hx-get="{% url 'cancel_edit' item.todo_list.id item.id %}"
                 hx-target="#item-{{ item.id }}"
-                hx-swap="outerHTML">
-            Cancel
+                hx-swap="outerHTML"
+                title="Cancel">
+            ❌
         </button>
     </form>
 </div>"""
