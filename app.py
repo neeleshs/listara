@@ -653,6 +653,8 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
         </form>
     </div>
 
+    <div id="message-container"></div>
+
     <div class="card">
         <h2>Items</h2>
         <div id="items">
@@ -848,7 +850,21 @@ def add_item(request, list_id):
         todo_list = get_object_or_404(TodoList, id=list_id)
         text = request.POST.get("text")
         if text:
-            item = TodoItem.objects.create(todo_list=todo_list, text=text)
+            # Check for duplicates (case-insensitive)
+            text_stripped = text.strip()
+            existing_items = todo_list.items.all()
+            for existing_item in existing_items:
+                if existing_item.text.lower() == text_stripped.lower():
+                    # Return a simple message for duplicate that auto-removes
+                    return HttpResponse(
+                        '<div class="card" id="duplicate-message" style="background: #fff3cd; border-color: #ffc107; padding: 15px; margin-bottom: 15px;">'
+                        '<p style="color: #856404; margin: 0; font-weight: 500;">This item already exists in the list</p>'
+                        '<script>setTimeout(() => document.getElementById("duplicate-message")?.remove(), 3000);</script>'
+                        '</div>',
+                        headers={'HX-Reswap': 'innerHTML', 'HX-Retarget': '#message-container'}
+                    )
+
+            item = TodoItem.objects.create(todo_list=todo_list, text=text_stripped)
             # Update the list's timestamp
             todo_list.save(update_fields=['updated_at'])
             # Remove empty state if this is the first item
