@@ -543,18 +543,14 @@ HOME_TEMPLATE = """{% extends "base.html" %}
         });
 
         listsContainer.innerHTML = sortedLists.map(([id, list]) => {
-            const createdDate = new Date(list.created).toLocaleDateString();
             return `
                 <div class="list-item">
                     <a href="/list/${id}/" onclick="storeListVisit('${id}', '${list.name}')">
                         ${list.name}
                     </a>
-                    <div class="list-meta">
-                        <span class="date">${createdDate}</span>
-                        <button class="btn-remove" onclick="event.preventDefault(); deleteList('${id}')">
-                            Remove
-                        </button>
-                    </div>
+                    <button class="btn-remove" onclick="event.preventDefault(); deleteList('${id}')">
+                        Remove
+                    </button>
                 </div>
             `;
         }).join('');
