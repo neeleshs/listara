@@ -464,7 +464,10 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
 </div>
 
 <div class="container">
-    <form hx-post="{% url 'add_item' todo_list.id %}" hx-target="#items" hx-swap="beforeend">
+    <form hx-post="{% url 'add_item' todo_list.id %}"
+          hx-target="#items"
+          hx-swap="beforeend"
+          hx-on::after-request="if(event.detail.successful) this.reset()">
         {% csrf_token %}
         <div class="form-group">
             <input type="text" name="text" placeholder="Add new item..." required>
