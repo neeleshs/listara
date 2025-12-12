@@ -640,7 +640,6 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
 <div class="app-header">
     <a href="{% url 'home' %}" class="back-button">← Back</a>
     <h1>{{ todo_list.name }}</h1>
-    <p>Manage your tasks</p>
 </div>
 
 <div class="content">
@@ -648,7 +647,7 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
         <form hx-post="{% url 'add_item' todo_list.id %}"
               hx-target="#items"
               hx-swap="beforeend"
-              hx-on::after-request="if(event.detail.successful) this.reset()">
+              hx-on::after-request="if(event.detail.successful) { this.reset(); this.querySelector('input[name=text]').focus(); }">
             {% csrf_token %}
             <input type="text" name="text" placeholder="Add new item..." required autofocus>
             <button type="submit" class="btn-primary">Add Item</button>
@@ -656,7 +655,7 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
     </div>
 
     <div class="card">
-        <h2>Tasks</h2>
+        <h2>Items</h2>
         <div id="items">
         {% for item in todo_list.items.all %}
         <div class="todo-item" id="item-{{ item.id }}">
@@ -871,8 +870,11 @@ def edit_item_form(request, list_id, item_id):
 @app.route("list/<uuid:list_id>/item/<uuid:item_id>/", name="update_item")
 def update_item(request, list_id, item_id):
     if request.method == "PUT":
+        from django.http import QueryDict
         item = get_object_or_404(TodoItem, id=item_id, todo_list_id=list_id)
-        text = request.POST.get("text")
+        # Parse PUT data from request body
+        put_data = QueryDict(request.body)
+        text = put_data.get("text")
         if text:
             item.text = text
             item.save()
