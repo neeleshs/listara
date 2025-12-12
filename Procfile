@@ -1,1 +1,1 @@
-web: nanodjango run app.py --port ${PORT:-8000}
+web: python app.py

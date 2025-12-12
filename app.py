@@ -706,4 +706,8 @@ def delete_item(request, list_id, item_id):
 
 
 if __name__ == "__main__":
-    app.run()
+    # For production deployment - use PORT env var if available
+    port = int(os.environ.get("PORT", 8000))
+    # In production, bind to 0.0.0.0 to accept external connections
+    host = "0.0.0.0" if os.environ.get("PORT") else "127.0.0.1"
+    app.run(host=f"{host}:{port}")
