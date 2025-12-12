@@ -430,6 +430,12 @@ BASE_TEMPLATE = """<!DOCTYPE html>
         }
     </style>
     <script>
+        // Detect if mobile device
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                   (window.innerWidth <= 768 && 'ontouchstart' in window);
+        }
+
         // Store visited lists in localStorage
         function storeListVisit(listId, listName) {
             let visitedLists = JSON.parse(localStorage.getItem('visitedLists') || '{}');
@@ -646,9 +652,9 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
         <form hx-post="{% url 'add_item' todo_list.id %}"
               hx-target="#items"
               hx-swap="beforeend"
-              hx-on::after-request="if(event.detail.successful) { this.reset(); this.querySelector('input[name=text]').focus(); }">
+              hx-on::after-request="if(event.detail.successful) { this.reset(); const input = this.querySelector('input[name=text]'); if (!isMobileDevice()) { input.focus(); } else { input.blur(); } }">
             {% csrf_token %}
-            <input type="text" name="text" placeholder="Add new item..." required autofocus>
+            <input type="text" name="text" placeholder="Add new item..." required>
             <button type="submit" class="btn-primary">Add Item</button>
         </form>
     </div>
@@ -765,7 +771,7 @@ EDIT_ITEM_FORM = """<div class="todo-item" id="item-{{ item.id }}">
           hx-target="#item-{{ item.id }}"
           hx-swap="outerHTML">
         {% csrf_token %}
-        <input type="text" name="text" value="{{ item.text }}" required autofocus>
+        <input type="text" name="text" value="{{ item.text }}" required>
         <button type="submit" class="btn-icon btn-edit" title="Save">✅</button>
         <button type="button" class="btn-icon btn-delete"
                 hx-get="{% url 'cancel_edit' item.todo_list.id item.id %}"
