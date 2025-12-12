@@ -79,7 +79,7 @@ class TodoItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['created_at']
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.text
@@ -651,8 +651,8 @@ LIST_DETAIL_TEMPLATE = """{% extends "base.html" %}
     <div class="card">
         <form hx-post="{% url 'add_item' todo_list.id %}"
               hx-target="#items"
-              hx-swap="beforeend"
-              hx-on::after-request="if(event.detail.successful) { this.reset(); const input = this.querySelector('input[name=text]'); if (!isMobileDevice()) { input.focus(); } else { input.blur(); } }">
+              hx-swap="afterbegin"
+              hx-on::after-request="if(event.detail.successful) { this.reset(); if (!isMobileDevice()) { this.querySelector('input[name=text]').focus(); } }">
             {% csrf_token %}
             <input type="text" name="text" placeholder="Add new item..." required>
             <button type="submit" class="btn-primary">Add Item</button>
